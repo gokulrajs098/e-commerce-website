@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import authenticate, login
-from .forms import SignupForm, LoginForm, ProductForm
+from .forms import SignupForm, LoginForm, ProductForm, UpdateForm
 from .models import User, Product, Reviews
 
-@login_required
+# @login_required
 def home(request):
     return render(request, "e_commerce_app/home.html")
 
@@ -47,10 +47,11 @@ def login_view(request):
 @login_required
 def profile(request):
     id = request.user.id
+    user = request.user
     if request.method =="PATCH":
-
-
-    
+        form = UpdateForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save(user=user)
     user = User.objects.get(id=id)
     return render(request, 'e_commerce_app/profile.html', {"user":user})
 

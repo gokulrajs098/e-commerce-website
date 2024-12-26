@@ -1,3 +1,19 @@
-<navbar>
-    <p>Home</p>
+{% extends 'e_commerce_app/base.html' %}
+
+{%block content%}
+
+<navbar class="flex flex-row">
+    <div>Gokul-Kart</div>
+
+    <div class="flex flex-row justify-content-space-between">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'products' %}">Products</a>
+        <a>Latest</a>
+        <a>category</a>
+        <a>offers</a>
+        <a>About Us</a>
+        <a>Contact Us</a>
+    </div>
 </navbar>
+
+{% endblock%}

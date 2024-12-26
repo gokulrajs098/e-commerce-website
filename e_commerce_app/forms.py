@@ -37,6 +37,13 @@ class LoginForm(forms.Form):
     email = forms.EmailField(required=True)
     password = forms.CharField(required=True)
 
+class UpdateForm(forms.Form):
+    firstname = forms.CharField(max_length=100, )
+    lastname = forms.CharField(max_length=100, )
+    username = forms.CharField(max_length=100, )
+    email = forms.EmailField()
+    password = forms.CharField()
+
 class ProductForm(forms.Form):
     name = forms.CharField(required=True)
     price = forms.FloatField(required=True)
