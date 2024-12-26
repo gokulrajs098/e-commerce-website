@@ -1,0 +1,25 @@
+{% include 'e_commerce_app/base.html'%}
+
+{% block content%}
+    <div class="flex mt-48 items-center justify-center">
+        <form action = "{% url 'add_product' %}" method="POST" class="flex flex-col items-center justify-center w-1/2">
+            {% csrf_token %}
+            <label class="w-full">Name
+                <input name="name" type="text"/>
+            </label>
+            <label class="w-full" >Quantity
+                <input name="quantity" type="number"/>
+            </label>
+            <label class="w-full">Image
+                <input name="image" type="file"/>
+            </label>
+            <label class="w-full">Description
+                <input name="description" type="text"/>
+            </label>
+            <label class="w-full">Discount
+                <input name="discount" type="number"/>
+            </label>
+            <button type="buttton "class="btn bg-red-400 ">Submit</button>
+        </form>
+    </div>
+{% endblock%}
