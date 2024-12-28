@@ -2,18 +2,20 @@
 
 {%block content%}
 
-<navbar class="flex flex-row">
-    <div>Gokul-Kart</div>
+<nav class="flex flex-row">
+    <div class="font-bold text-xl w-full flex flex-row justify-between items-center mt-5 mr-5 ml-5">
+        <div>Gokul-Kart</div>
 
-    <div class="flex flex-row justify-content-space-between">
-        <a href="{% url 'home' %}">Home</a>
-        <a href="{% url 'products' %}">Products</a>
-        <a>Latest</a>
-        <a>category</a>
-        <a>offers</a>
-        <a>About Us</a>
-        <a>Contact Us</a>
+        <div class="flex flex-row space-x-20">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'products' %}">Products</a>
+            <a href="{% url 'products' category='latest' %}">Latest</a>
+            <a>category</a>
+            <a>offers</a>
+            <a>About Us</a>
+            <a>Contact Us</a>
+        </div>
     </div>
-</navbar>
+</nav>
 
 {% endblock%}

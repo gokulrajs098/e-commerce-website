@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from .forms import SignupForm, LoginForm, ProductForm, UpdateForm
 from .models import User, Product, Reviews
+from django.utils import timezone
+from datetime import timedelta
 
 # @login_required
 def home(request):
@@ -44,6 +46,11 @@ def login_view(request):
                 print("invalid")
     return render(request, "e_commerce_app/login.html")
 
+def logout_view(request):
+    logout(request)
+
+    return redirect('login')
+
 @login_required
 def profile(request):
     id = request.user.id
@@ -54,7 +61,6 @@ def profile(request):
             form.save(user=user)
     user = User.objects.get(id=id)
     return render(request, 'e_commerce_app/profile.html', {"user":user})
-
 
 @login_required
 def add_product(request):
@@ -78,12 +84,18 @@ def add_product(request):
     products = Product.objects.all()
     return render(request, "e_commerce_app/admin_dashboard.html", {"products":products})
 
-def products_view(request, category):
-    
-    products = Product.objects.filter(category=category)
-    return render(request, 'e_commerce_app/products.html', {"products":products})
+def products_view(request, category=None):
+    if category:
+        products = Product.objects.filter(category=category)
+        return render(request, 'e_commerce_app/products.html', {"products":products})
+    elif category == "latest":
+        now = timezone.now()
+        time = now - timedelta(days=2)
+        products = Product.objects.filter(created_at__gte=time)
+        return render(request, 'e_commerce_app/products.html', {"products":products})
+    else:
+        return render(request, 'e_commerce_app/products.html')
 
 def product_view(request, id):
-    
     product = Product.objects.filter(id=id)
     return render(request, 'e_commerce_app/product.html', {"product":product})
