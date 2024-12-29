@@ -1,17 +1,19 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.contrib.auth import authenticate, login, logout
 from .forms import SignupForm, LoginForm, ProductForm, UpdateForm
 from .models import User, Product, Reviews
 from django.utils import timezone
 from datetime import timedelta
 
-# @login_required
+def superuser_required(user):
+    return user.is_superuser
+
+@login_required
 def home(request):
     return render(request, "e_commerce_app/home.html")
 
-
-@login_required
 def signup(request):
     if request.method == "POST":
         form = SignupForm(request.POST)
@@ -29,7 +31,14 @@ def signup(request):
             )
             user.set_password(password)
             user.save()
+            messages.success(request, "Account created successfully")
+            messages.success(request, "Welcome to Gokul-Kart")
             return redirect('login')
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+    
     return render(request, "e_commerce_app/signup.html")
 
 def login_view(request):
@@ -63,6 +72,7 @@ def profile(request):
     return render(request, 'e_commerce_app/profile.html', {"user":user})
 
 @login_required
+@user_passes_test(superuser_required)
 def add_product(request):
     if request.method == "POST":
         form = ProductForm(request.POST)

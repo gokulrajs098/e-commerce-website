@@ -1,6 +1,24 @@
 {% extends 'e_commerce_app/base.html'%}
 
 {% block content%}
+
+  <div class="message-container flex justify-center mt-16">
+    {% if messages %}
+      {% for message in messages%}
+        <div class="messages 
+          {%if message.tags == 'success'%}
+            'bg-green-500 text-white'
+          {% elif message.tags == 'error'%}
+            'bg-red-500 text-white'
+          {% endif %}
+        ">
+          {{message}}
+        </div>
+      
+      {% endfor %}
+    {% endif %}
+  </div>
+  <div class="flex justify-center">Enter Your Login Credentials</div>
   <div class="flex items-center justify-center mt-48">
     <form class="flex flex-col" action="" method="post">
       {% csrf_token %}

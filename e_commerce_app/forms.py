@@ -13,25 +13,21 @@ class SignupForm(forms.Form):
         name = self.cleaned_data.get('username')
         if len(name) < 5:
             raise forms.ValidationError('Username must be more than 5 characters long')
+        if User.objects.filter(username=name).exists():
+            raise forms.ValidationError('username already exists, try again')
         return name
     
-    def clean_username(self):
-        username = self.cleaned_data('username')
-        if User.objects.exists(username=username):
-            raise forms.ValidationError('username already exists, try again')
-        return username
-    
     def clean_email(self):
-        email = self.cleaned_data('email')
-        if User.objects.exists(email=email):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
             raise forms.ValidationError('username already exists, try again')
         return email
     
     def clean_password(self):
-        password = self.cleaned_data('password')
+        password = self.cleaned_data.get('password')
         if len(password) < 8:
             raise forms.ValidationError('password must be more than 8 characters')
-        return 
+        return password
     
 class LoginForm(forms.Form):
     email = forms.EmailField(required=True)

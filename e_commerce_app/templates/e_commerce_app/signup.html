@@ -1,31 +1,59 @@
 {% extends 'e_commerce_app/base.html'%}
 
 {% block content%}
-  <div class="flex items-center justify-center mx-auto mt-48 ">
+  {% if messages %}
+    <div class="message-container flex justify-center mt-6">
+      {% for message in messages %}
+        <div class="messages 
+          {% if message.tags == 'success' %}
+            bg-green-500 text-white
+          {% elif message.tags == 'error' %}
+            bg-red-500 text-white
+          {% elif message.tags == 'info' %}
+            bg-blue-500 text-white  
+          {% endif %}
+        ">
+          {{message}}
+        </div>
+      {% endfor %}
+  {% endif %}
+  </div>
+  <div class="flex justify-center mt-16">
+    <h3>Fill the form to create account</h3>
+  </div>
+  <div class="flex items-center justify-center mx-auto mt-32 ">
     <div class="flex flex-col">
       <form method="post" action="" class="flex flex-col items-center justify-center mx-auto">
         {% csrf_token %}
         <div class="">
           <label>First Name
-            <input type="text" name="firstname"/>
+            <input type="text" value ="form.firstname.value"name="firstname"/>
           </label>
           <label>Last Name
-            <input type="text" name="lastname"/>
+            <input type="text" value= "form.lastname.value" name="lastname"/>
           </label>
         </div>
         <label class="grow w-full flex flex-row">Username
-          <input name="username" type="text" class="w-full"/>
+          <input name="username" value="form.username.value" type="text" class="w-full"/>
         </label>
         <label class="grow w-full flex flex-row">Email
-          <input name="email" type="email"/>
+          <input name="email" value="form.email.value" type="email"/>
         </label>
         <label class="grow w-full flex flex-row">Password
           <input name="password" type="password"/>
         </label>
         <button type="buttton "class="btn bg-red-400 ">Submit</button>
       </form>
-      
       <p>Already have an account? <a href="{%url 'login'%}">Sign In</p>
     </div>
   </div>
+  <script>
+    setTimeout(()=>{
+      const messageContainer = document.querySelector(".message-container");
+
+      if (messageContainer){
+        messageContainer.style.display = 'none';
+      }
+    }, 5000)
+  </script>
 {% endblock%}
